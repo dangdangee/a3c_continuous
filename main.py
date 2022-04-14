@@ -41,7 +41,7 @@ parser.add_argument(
 parser.add_argument(
     '--workers',
     type=int,
-    default=32,
+    default=16,
     metavar='W',
     help='how many training processes to use (default: 32)')
 parser.add_argument(
@@ -53,7 +53,7 @@ parser.add_argument(
 parser.add_argument(
     '--max-episode-length',
     type=int,
-    default=10000,
+    default=6,
     metavar='M',
     help='maximum length of an episode (default: 10000)')
 parser.add_argument(

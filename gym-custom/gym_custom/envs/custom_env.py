@@ -7,8 +7,8 @@ import numpy as np
 class CustomEnv(gym.Env):
   metadata = {'render.modes': ['human']}
   def __init__(self):
-    self.init_state = np.zeros((70*500,1),dtype=np.uint8)
-    self._state = np.zeros((70*500,1),dtype=np.uint8)
+    self.init_state = np.zeros((70*500),dtype=np.uint8)
+    self._state = np.zeros((70*500),dtype=np.uint8)
     self._step = 0
     self.action_space = spaces.Box(
       # low=np.array([1, 1, 1, 1]), # x y w h
@@ -32,14 +32,14 @@ class CustomEnv(gym.Env):
     yy = action[1]*399+1
     ww = action[2]*49+1
     hh = action[3]*99+1
-    x=np.around(xx)
-    y=np.around(yy)
-    w=np.around(ww)
-    h=np.around(hh)
+    x=int(np.around(xx))
+    y=int(np.around(yy))
+    w=int(np.around(ww))
+    h=int(np.around(hh))
     temp_state = np.zeros((70,500,1),dtype=np.uint8)
     temp_state[x:w,y:h] = 1
-    temp_state2 = temp_state.reshape((70*500,1))
-    if np.sum(ob*temp_state2)==0:
+    temp_state2 = temp_state.reshape((70*500))
+    if np.sum(self._state*temp_state2)==0:
       checker = True
     else:
       checker = False

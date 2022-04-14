@@ -1,5 +1,6 @@
 from __future__ import division
 import math
+from multiprocessing.sharedctypes import Value
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -28,9 +29,10 @@ class Agent(object):
     def action_train(self):
         if self.args.model == 'CONV':
             self.state = self.state.unsqueeze(0)
+        
         value, mu, sigma, (self.hx, self.cx) = self.model(
             (Variable(self.state), (self.hx, self.cx)))
-        mu = torch.clamp(mu, -1.0, 1.0)
+        mu = torch.clamp(mu, 0.0, 1.0)
         sigma = F.softplus(sigma) + 1e-5
         eps = torch.randn(mu.size())
         pi = np.array([math.pi])
@@ -46,7 +48,7 @@ class Agent(object):
         action = (mu + sigma.sqrt() * eps).data
         act = Variable(action)
         prob = normal(act, mu, sigma, self.gpu_id, gpu=self.gpu_id >= 0)
-        action = torch.clamp(action, -1.0, 1.0)
+        action = torch.clamp(action, 0.0, 1.0)
         entropy = 0.5 * ((sigma * 2 * pi.expand_as(sigma)).log() + 1)
         self.entropies.append(entropy)
         log_prob = (prob + 1e-6).log()

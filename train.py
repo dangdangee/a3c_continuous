@@ -18,6 +18,7 @@ def train(rank, args, shared_model, optimizer):
     if gpu_id >= 0:
         torch.cuda.manual_seed(args.seed + rank)
     env = create_env(args.env, args)
+    
     if optimizer is None:
         if args.optimizer == 'RMSprop':
             optimizer = optim.RMSprop(shared_model.parameters(), lr=args.lr)
@@ -25,6 +26,7 @@ def train(rank, args, shared_model, optimizer):
             optimizer = optim.Adam(shared_model.parameters(), lr=args.lr)
 
     env.seed(args.seed + rank)
+    
     player = Agent(None, env, args, None)
     player.gpu_id = gpu_id
     if args.model == 'MLP':
@@ -32,15 +34,18 @@ def train(rank, args, shared_model, optimizer):
             player.env.observation_space.shape[0], player.env.action_space, args.stack_frames)
     if args.model == 'CONV':
         player.model = A3C_CONV(args.stack_frames, player.env.action_space)
-
+    
     player.state = player.env.reset()
     player.state = torch.from_numpy(player.state).float()
     if gpu_id >= 0:
         with torch.cuda.device(gpu_id):
             player.state = player.state.cuda()
             player.model = player.model.cuda()
+    
     player.model.train()
-    while True:
+    
+    training_steps = 100
+    for _ in range(training_steps):
         if gpu_id >= 0:
             with torch.cuda.device(gpu_id):
                 player.model.load_state_dict(shared_model.state_dict())
@@ -57,14 +62,13 @@ def train(rank, args, shared_model, optimizer):
         else:
             player.cx = Variable(player.cx.data)
             player.hx = Variable(player.hx.data)
-            
+        
+
         for step in range(args.num_steps):
-
             player.action_train()
-
             if player.done:
                 break
-
+        
         if player.done:
             player.eps_len = 0
             state = player.env.reset()
