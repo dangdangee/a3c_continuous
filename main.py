@@ -4,6 +4,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 import argparse
 import torch
 import torch.multiprocessing as mp
+from gym.envs.registration import register
 from environment import create_env
 from model import A3C_MLP, A3C_CONV
 from train import train
@@ -57,7 +58,8 @@ parser.add_argument(
     help='maximum length of an episode (default: 10000)')
 parser.add_argument(
     '--env',
-    default='BipedalWalker-v2',
+    # default='BipedalWalker-v2',
+    default = 'Supercond-v0',
     metavar='ENV',
     help='environment to train on (default: BipedalWalker-v2)')
 parser.add_argument(
@@ -126,6 +128,12 @@ parser.add_argument(
 # training was far superior
 
 if __name__ == '__main__':
+    register(
+        id='Supercond-v0',
+        entry_point='gym_custom.envs.custom_env:CustomEnv',
+        # max_episode_steps=1000,
+    )
+
     args = parser.parse_args()
     torch.manual_seed(args.seed)
     if args.gpu_ids == -1:

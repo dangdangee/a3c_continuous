@@ -4,7 +4,6 @@ import numpy as np
 from collections import deque
 from gym import spaces
 
-
 def create_env(env_id, args):
     env = gym.make(env_id)
     env = frame_stack(env, args)
