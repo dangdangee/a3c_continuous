@@ -55,6 +55,7 @@ class Agent(object):
         self.log_probs.append(log_prob)
         state, reward, self.done, self.info = self.env.step(
             action.cpu().numpy()[0])
+        #print(state.reshape(5,10), action.cpu().numpy()[0], reward)
         reward = max(min(float(reward), 1.0), -1.0)
         self.state = torch.from_numpy(state).float()
         if self.gpu_id >= 0:

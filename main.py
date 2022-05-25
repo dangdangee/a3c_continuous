@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='A3C')
 parser.add_argument(
     '--lr',
     type=float,
-    default=0.01,
+    default=0.001,
     metavar='LR',
     help='learning rate (default: 0.0001)')
 parser.add_argument(
@@ -41,13 +41,13 @@ parser.add_argument(
 parser.add_argument(
     '--workers',
     type=int,
-    default=16,
+    default=1,
     metavar='W',
     help='how many training processes to use (default: 32)')
 parser.add_argument(
     '--num-steps',
     type=int,
-    default=20,
+    default=5,
     metavar='NS',
     help='number of forward steps in A3C (default: 300)')
 parser.add_argument(
@@ -170,6 +170,7 @@ if __name__ == '__main__':
     p.start()
     processes.append(p)
     time.sleep(0.1)
+
     for rank in range(0, args.workers):
         p = mp.Process(target=train, args=(
             rank, args, shared_model, optimizer))
@@ -179,3 +180,8 @@ if __name__ == '__main__':
     for p in processes:
         time.sleep(0.1)
         p.join()
+
+    p = mp.Process(target=test, args=(args, shared_model))
+    p.start()
+    processes.append(p)
+    time.sleep(0.1)

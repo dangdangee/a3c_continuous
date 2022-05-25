@@ -24,8 +24,6 @@ def train(rank, args, shared_model, optimizer):
             optimizer = optim.RMSprop(shared_model.parameters(), lr=args.lr)
         if args.optimizer == 'Adam':
             optimizer = optim.Adam(shared_model.parameters(), lr=args.lr)
-
-    env.seed(args.seed + rank)
     
     player = Agent(None, env, args, None)
     player.gpu_id = gpu_id
@@ -44,7 +42,8 @@ def train(rank, args, shared_model, optimizer):
     
     player.model.train()
     
-    training_steps = 10000
+    training_steps = 2000
+    ep_rewards = []
     for training_step in range(training_steps):
         if training_step%100 == 0:
             print('training_step:',training_step)
@@ -66,12 +65,17 @@ def train(rank, args, shared_model, optimizer):
             player.hx = Variable(player.hx.data)
         
 
-        for step in range(args.num_steps):
+        for _ in range(args.num_steps):
             player.action_train()
             if player.done:
                 break
         
         if player.done:
+            #print("Training ep rewards : ", np.sum(player.rewards))
+            ep_rewards.append(np.sum(player.rewards))
+            if len(ep_rewards) % 100:
+                print("Last 100 ep training rewards : ", ep_rewards)
+                ep_rewards = []
             player.eps_len = 0
             state = player.env.reset()
             player.state = torch.from_numpy(state).float()

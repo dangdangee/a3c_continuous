@@ -56,7 +56,7 @@ class CustomEnv(gym.Env):
       ob = self._state
       temp_state2 *= 0
     # print('obs:',ob)
-    rew = np.sum(ob)/50.
+    rew = np.sum(temp_state2)/50.
     # print('reward:',rew)
     done = True if self._step > 4 else False
     # import ipdb;ipdb.set_trace()
@@ -67,10 +67,10 @@ class CustomEnv(gym.Env):
     # step reward terminal info: none
   def reset(self):
     self._step = 0
+    self._state = self.init_state.copy()
     return self.init_state
   def render(self, mode='human', close=False):
-    temp_state = self._state.reshape(5,10)
-    return temp_state
+    return self._state.reshape(5,10)
 
 # def reward(action):
 #   pass

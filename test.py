@@ -48,7 +48,7 @@ def test(args, shared_model):
             player.state = player.state.cuda()
     player.model.eval()
     max_score = 0
-    while True:
+    for _ in range(50):
         if player.done:
             if gpu_id >= 0:
                 with torch.cuda.device(gpu_id):
@@ -84,7 +84,6 @@ def test(args, shared_model):
             reward_sum = 0
             player.eps_len = 0
             state = player.env.reset()
-            time.sleep(60)
             player.state = torch.from_numpy(state).float()
             if gpu_id >= 0:
                 with torch.cuda.device(gpu_id):
