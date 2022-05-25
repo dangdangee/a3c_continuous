@@ -1,22 +1,22 @@
-2022-04-14 23:02:22,995 : lr: 0.0001
-2022-04-14 23:02:22,996 : gamma: 0.99
-2022-04-14 23:02:22,996 : tau: 1.0
-2022-04-14 23:02:22,997 : seed: 1
-2022-04-14 23:02:22,997 : workers: 16
-2022-04-14 23:02:22,997 : num_steps: 20
-2022-04-14 23:02:22,998 : max_episode_length: 6
-2022-04-14 23:02:22,998 : env: Supercond-v0
-2022-04-14 23:02:22,999 : shared_optimizer: True
-2022-04-14 23:02:22,999 : load: False
-2022-04-14 23:02:22,999 : save_max: True
-2022-04-14 23:02:23,000 : optimizer: Adam
-2022-04-14 23:02:23,000 : load_model_dir: trained_models/
-2022-04-14 23:02:23,000 : save_model_dir: trained_models/
-2022-04-14 23:02:23,001 : log_dir: logs/
-2022-04-14 23:02:23,001 : model: MLP
-2022-04-14 23:02:23,002 : stack_frames: 1
-2022-04-14 23:02:23,002 : gpu_ids: [-1]
-2022-04-14 23:02:23,002 : amsgrad: True
-2022-04-14 23:02:23,199 : Time 00h 00m 00s, episode reward 0.0, episode length 6, reward mean 0.0000
-2022-04-14 23:03:23,861 : Time 00h 01m 00s, episode reward 0.0, episode length 2, reward mean 0.0000
-2022-04-14 23:04:24,517 : Time 00h 02m 01s, episode reward 0.0, episode length 1, reward mean 0.0000
+2022-05-25 21:34:43,871 : lr: 0.01
+2022-05-25 21:34:43,872 : gamma: 0.99
+2022-05-25 21:34:43,872 : tau: 1.0
+2022-05-25 21:34:43,873 : seed: 1
+2022-05-25 21:34:43,873 : workers: 16
+2022-05-25 21:34:43,874 : num_steps: 20
+2022-05-25 21:34:43,874 : max_episode_length: 5
+2022-05-25 21:34:43,875 : env: Supercond-v0
+2022-05-25 21:34:43,875 : shared_optimizer: True
+2022-05-25 21:34:43,876 : load: False
+2022-05-25 21:34:43,876 : save_max: True
+2022-05-25 21:34:43,876 : optimizer: Adam
+2022-05-25 21:34:43,877 : load_model_dir: trained_models/
+2022-05-25 21:34:43,877 : save_model_dir: trained_models/
+2022-05-25 21:34:43,878 : log_dir: logs/
+2022-05-25 21:34:43,878 : model: MLP
+2022-05-25 21:34:43,878 : stack_frames: 1
+2022-05-25 21:34:43,879 : gpu_ids: [-1]
+2022-05-25 21:34:43,879 : amsgrad: True
+2022-05-25 21:34:43,896 : Time 00h 00m 00s, episode reward 0.0, episode length 5, reward mean 0.0000
+2022-05-25 21:35:43,906 : Time 00h 01m 00s, episode reward 0.0, episode length 5, reward mean 0.0000
+2022-05-25 21:36:43,919 : Time 00h 02m 00s, episode reward 0.0, episode length 5, reward mean 0.0000

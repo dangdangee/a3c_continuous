@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='A3C')
 parser.add_argument(
     '--lr',
     type=float,
-    default=0.0001,
+    default=0.01,
     metavar='LR',
     help='learning rate (default: 0.0001)')
 parser.add_argument(
@@ -53,7 +53,7 @@ parser.add_argument(
 parser.add_argument(
     '--max-episode-length',
     type=int,
-    default=6,
+    default=5,
     metavar='M',
     help='maximum length of an episode (default: 10000)')
 parser.add_argument(
@@ -142,6 +142,7 @@ if __name__ == '__main__':
         torch.cuda.manual_seed(args.seed)
         mp.set_start_method('spawn')
     env = create_env(args.env, args)
+    # print(env.render())
     if args.model == 'MLP':
         shared_model = A3C_MLP(
             env.observation_space.shape[0], env.action_space, args.stack_frames)

@@ -44,8 +44,10 @@ def train(rank, args, shared_model, optimizer):
     
     player.model.train()
     
-    training_steps = 100
-    for _ in range(training_steps):
+    training_steps = 10000
+    for training_step in range(training_steps):
+        if training_step%100 == 0:
+            print('training_step:',training_step)
         if gpu_id >= 0:
             with torch.cuda.device(gpu_id):
                 player.model.load_state_dict(shared_model.state_dict())

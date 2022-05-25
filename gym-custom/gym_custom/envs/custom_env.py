@@ -4,64 +4,73 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
 
+np.set_printoptions(threshold=np.inf, linewidth=np.inf)
+
 class CustomEnv(gym.Env):
   metadata = {'render.modes': ['human']}
   def __init__(self):
-    self.init_state = np.zeros((70*500),dtype=np.uint8)
-    self._state = np.zeros((70*500),dtype=np.uint8)
+    self.init_state = np.zeros((5*10),dtype=np.uint8)
+    self._state = np.zeros((5*10),dtype=np.uint8)
     self._step = 0
     self.action_space = spaces.Box(
-      # low=np.array([1, 1, 1, 1]), # x y w h
-      # high=np.array([20, 400, 50, 100]), # mm scale
       low = 0,
       high = 1,
       shape=(4,),
-      # dtype=np.uint8
     )
     # 4 dimension
     self.observation_space = spaces.Box(
       low=0,
       high=1,
       # shape=(700,5000,1),
-      shape = (70*500,),
+      shape = (5*10,),
       # 1 mm
       dtype=np.uint8
     )
   def step(self, action):
-    xx = action[0]*19+1
-    yy = action[1]*399+1
-    ww = action[2]*49+1
-    hh = action[3]*99+1
+    xx = action[0]*4
+    yy = action[1]*9
+    ww = action[2]*4
+    hh = action[3]*9
+    # print(xx,yy,ww,hh)
     x=int(np.around(xx))
     y=int(np.around(yy))
     w=int(np.around(ww))
     h=int(np.around(hh))
-    temp_state = np.zeros((70,500,1),dtype=np.uint8)
+    # print('x:',x)
+    # print('y:',y)
+    # print('w:',w)
+    # print('h:',h)
+    # print('action:',x,y,w,h)
+    temp_state = np.zeros((5,10,1),dtype=np.uint8)
     temp_state[x:w,y:h] = 1
-    temp_state2 = temp_state.reshape((70*500))
+    # print(np.sum(temp_state))
+    temp_state2 = temp_state.reshape((5*10))
     if np.sum(self._state*temp_state2)==0:
       checker = True
     else:
       checker = False
-
+    
     if checker==True:
       ob = self._state + temp_state2
     else:
       ob = self._state
-    rew = np.sum(ob)
-    done = True if self._step > 6 else False
+      temp_state2 *= 0
+    # print('obs:',ob)
+    rew = np.sum(ob)/50.
+    # print('reward:',rew)
+    done = True if self._step > 4 else False
+    # import ipdb;ipdb.set_trace()
     info = {}
     self._state = ob
     self._step += 1
     return ob, rew, done, info
     # step reward terminal info: none
   def reset(self):
+    self._step = 0
     return self.init_state
-    # initial state
   def render(self, mode='human', close=False):
-    temp_state = self._state.reshape(70,500)
+    temp_state = self._state.reshape(5,10)
     return temp_state
-    # imageio.imread
 
 # def reward(action):
 #   pass

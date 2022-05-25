@@ -69,6 +69,7 @@ def test(args, shared_model):
                     time.strftime("%Hh %Mm %Ss",
                                   time.gmtime(time.time() - start_time)),
                     reward_sum, player.eps_len, reward_mean))
+            print(player.env.render())
 
             if args.save_max and reward_sum >= max_score:
                 max_score = reward_sum
